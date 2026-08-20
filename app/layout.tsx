@@ -23,9 +23,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-screen w-screen flex flex-col md:flex-row bg-zinc-950 text-zinc-100 overflow-hidden">
+      <body
+        suppressHydrationWarning
+        className="h-screen w-screen flex flex-col md:flex-row bg-zinc-950 text-zinc-100 overflow-hidden"
+      >
         <MapThemeProvider>
           {/* Navigation Sidebar */}
           <Sidebar />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import type { StyleSpecification } from "maplibre-gl";
 
 export type MapStyleType = "dark" | "satellite" | "terrain" | "voyager";
@@ -11,6 +11,7 @@ export interface MapStyleOption {
   style: string | StyleSpecification;
   icon: string;
   description: string;
+  maxZoom?: number;
 }
 
 // Open raster style configurations with zero API key requirement
@@ -23,6 +24,7 @@ const satelliteStyle: StyleSpecification = {
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       ],
       tileSize: 256,
+      maxzoom: 19,
       attribution: "Esri, Maxar, Earthstar Geographics",
     },
   },
@@ -32,7 +34,7 @@ const satelliteStyle: StyleSpecification = {
       type: "raster",
       source: "satellite",
       minzoom: 0,
-      maxzoom: 19,
+      maxzoom: 21,
     },
   ],
 };
@@ -46,6 +48,7 @@ const terrainStyle: StyleSpecification = {
         "https://tile.opentopomap.org/{z}/{x}/{y}.png",
       ],
       tileSize: 256,
+      maxzoom: 17,
       attribution: "OpenTopoMap, SRTM",
     },
   },
@@ -55,7 +58,7 @@ const terrainStyle: StyleSpecification = {
       type: "raster",
       source: "topo",
       minzoom: 0,
-      maxzoom: 17,
+      maxzoom: 19,
     },
   ],
 };
@@ -67,6 +70,7 @@ export const MAP_STYLES: Record<MapStyleType, MapStyleOption> = {
     style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
     icon: "🌌",
     description: "High-contrast telemetry & lithology mode",
+    maxZoom: 22,
   },
   satellite: {
     id: "satellite",
@@ -74,6 +78,7 @@ export const MAP_STYLES: Record<MapStyleType, MapStyleOption> = {
     style: satelliteStyle,
     icon: "🛰️",
     description: "High-res earth & outcrop imagery",
+    maxZoom: 20,
   },
   terrain: {
     id: "terrain",
@@ -81,6 +86,7 @@ export const MAP_STYLES: Record<MapStyleType, MapStyleOption> = {
     style: terrainStyle,
     icon: "⛰️",
     description: "Elevation contours & relief shading",
+    maxZoom: 18,
   },
   voyager: {
     id: "voyager",
@@ -88,6 +94,7 @@ export const MAP_STYLES: Record<MapStyleType, MapStyleOption> = {
     style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
     icon: "🗺️",
     description: "Detailed infrastructure & borders",
+    maxZoom: 22,
   },
 };
 
@@ -100,19 +107,18 @@ interface MapThemeContextType {
 const MapThemeContext = createContext<MapThemeContextType | null>(null);
 
 export function MapThemeProvider({ children }: { children: React.ReactNode }) {
-  const [activeStyle, setActiveStyle] = useState<MapStyleType>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("geolify_map_style") as MapStyleType;
-        if (saved && MAP_STYLES[saved]) {
-          return saved;
-        }
-      } catch {
-        // ignore localStorage errors in private browsing
+  const [activeStyle, setActiveStyle] = useState<MapStyleType>("dark");
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("geolify_map_style") as MapStyleType;
+      if (saved && MAP_STYLES[saved]) {
+        setActiveStyle(saved);
       }
+    } catch {
+      // ignore localStorage errors
     }
-    return "dark";
-  });
+  }, []);
 
   const handleSetStyle = (style: MapStyleType) => {
     setActiveStyle(style);

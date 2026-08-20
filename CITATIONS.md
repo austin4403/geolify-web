@@ -85,8 +85,25 @@ This document details all external map tile providers, GIS endpoints, geological
 | **Tailwind CSS v4** | Tailwind Labs | [https://tailwindcss.com/](https://tailwindcss.com/) | MIT |
 | **ApexCharts** | ApexCharts.js | [https://apexcharts.com/](https://apexcharts.com/) | MIT |
 | **Lucide Icons** | Lucide Community | [https://lucide.dev/](https://lucide.dev/) | ISC |
-| **Geist Typography** | Vercel Inc. | [https://vercel.com/font](https://vercel.com/font) | SIL Open Font License |
-| **Unsplash** | Unsplash Community (Avatars) | [https://unsplash.com/](https://unsplash.com/) | Unsplash License |
+| **Open Location Code** | Google LLC | [https://github.com/google/open-location-code](https://github.com/google/open-location-code) | Apache-2.0 |
+---
+
+## 🔍 4. Geocoding & Location Search Services
+
+* **Open Location Code / Google Plus Codes**:
+  * Description: Open-source spatial address encoding system developed by Google.
+  * Homepage: [https://maps.google.com/pluscodes/](https://maps.google.com/pluscodes/)
+  * License: Apache 2.0.
+
+* **Photon Geocoder (Komoot)**:
+  * Description: OpenStreetMap-based global geocoding and search API.
+  * Endpoint: [https://photon.komoot.io/](https://photon.komoot.io/)
+  * License & Attribution: OpenStreetMap contributors (ODbL), Komoot.
+
+* **Nominatim (OpenStreetMap Foundation)**:
+  * Description: Search engine for OpenStreetMap data and coordinate lookup.
+  * Endpoint: [https://nominatim.openstreetmap.org/](https://nominatim.openstreetmap.org/)
+  * License & Attribution: © OpenStreetMap contributors (ODbL).
 
 ---
 

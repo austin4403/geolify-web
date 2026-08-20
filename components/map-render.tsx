@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
-import { useMapTheme } from "@/context/MapThemeContext";
+import { useMapTheme, MAP_STYLES } from "@/context/MapThemeContext";
 
 interface MapRenderProps {
   initialCenter?: [number, number]; // [lng, lat]
   initialZoom?: number;
   className?: string;
   styleOverride?: string | StyleSpecification;
-  autoGeolocate?: boolean; // Requests device GPS and flies to user location
+  marker?: { center: [number, number]; label?: string } | null;
 }
 
 export default function MapRender({
@@ -17,12 +17,14 @@ export default function MapRender({
   initialZoom = 2.2,
   className = "w-full h-full min-h-[500px]",
   styleOverride,
-  autoGeolocate = false,
+  marker = null,
 }: MapRenderProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<MapLibreMap | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const markerInstanceRef = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
-  const { currentStyle } = useMapTheme();
+  const { currentStyle, activeStyle } = useMapTheme();
 
   const effectiveStyle = styleOverride || currentStyle;
 
@@ -45,18 +47,25 @@ export default function MapRender({
 
       if (!MapClass) return;
 
+      const maxZoomLimit = MAP_STYLES[activeStyle]?.maxZoom ?? 22;
+
       const map = new MapClass({
         container: mapContainerRef.current,
         style: effectiveStyle,
         center: initialCenter,
         zoom: initialZoom,
+        maxZoom: maxZoomLimit,
         attributionControl: false,
       });
 
-      // Top-right: Navigation (Pitch, Zoom, Bearing)
+      // Top-right: Navigation (Compass & Pitch only)
       if (NavigationControlClass) {
         map.addControl(
-          new NavigationControlClass({ visualizePitch: true }),
+          new NavigationControlClass({
+            showZoom: false,
+            showCompass: true,
+            visualizePitch: true,
+          }),
           "top-right"
         );
       }
@@ -66,10 +75,9 @@ export default function MapRender({
         map.addControl(new ScaleControlClass(), "bottom-left");
       }
 
-      // Bottom-right: GPS Crosshairs / Device Location Tracker
-      let geolocateControl: InstanceType<typeof maplibregl.GeolocateControl> | null = null;
+      // Bottom-right: GPS Crosshairs / Device Location Tracker (manual click by user)
       if (GeolocateControlClass) {
-        geolocateControl = new GeolocateControlClass({
+        const geolocateControl = new GeolocateControlClass({
           positionOptions: {
             enableHighAccuracy: true,
           },
@@ -84,14 +92,6 @@ export default function MapRender({
         if (!isCancelled) {
           map.resize();
           setLoaded(true);
-
-          if (autoGeolocate && geolocateControl) {
-            try {
-              geolocateControl.trigger();
-            } catch {
-              // ignore geolocation permission rejections
-            }
-          }
         }
       };
 
@@ -125,18 +125,93 @@ export default function MapRender({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialCenter, initialZoom, autoGeolocate]);
+  }, []);
 
-  // 2. React to dynamic global basemap style changes
+  // 2. Smoothly fly to center/zoom if updated
+  useEffect(() => {
+    if (mapInstanceRef.current && loaded && initialCenter) {
+      mapInstanceRef.current.flyTo({
+        center: initialCenter,
+        zoom: initialZoom,
+        essential: true,
+      });
+    }
+  }, [initialCenter?.[0], initialCenter?.[1], initialZoom, loaded]);
+
+  // 3. Render / Update High-Visibility Red Pin & Location Label
+  useEffect(() => {
+    if (!mapInstanceRef.current || !loaded) return;
+
+    if (markerInstanceRef.current) {
+      markerInstanceRef.current.remove();
+      markerInstanceRef.current = null;
+    }
+
+    if (!marker || !marker.center) return;
+
+    import("maplibre-gl").then((maplibregl) => {
+      if (!mapInstanceRef.current) return;
+      const MarkerClass = maplibregl.Marker;
+      if (!MarkerClass) return;
+
+      // Custom container for red pin and high-contrast red label
+      const el = document.createElement("div");
+      el.className = "flex flex-col items-center pointer-events-auto cursor-pointer select-none group z-30";
+      el.style.transform = "translate(0, -100%)";
+
+      // 1. Red Location Name Badge
+      if (marker.label) {
+        const labelPill = document.createElement("div");
+        labelPill.className =
+          "px-3 py-1 mb-1 rounded-full bg-red-600 text-white font-bold text-xs shadow-xl shadow-red-600/50 border border-red-300/80 flex items-center gap-1.5 whitespace-nowrap animate-bounce";
+        labelPill.innerHTML = `
+          <svg class="w-3.5 h-3.5 text-white shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+          </svg>
+          <span class="tracking-wide">${marker.label}</span>
+        `;
+        el.appendChild(labelPill);
+      }
+
+      // 2. High-Visibility Pulsing Red Target Pin
+      const pinWrapper = document.createElement("div");
+      pinWrapper.className = "relative flex items-center justify-center w-6 h-6";
+      pinWrapper.innerHTML = `
+        <span class="absolute w-6 h-6 rounded-full bg-red-500/60 animate-ping"></span>
+        <span class="relative w-4 h-4 rounded-full bg-red-600 border-2 border-white shadow-lg shadow-red-900"></span>
+      `;
+      el.appendChild(pinWrapper);
+
+      const newMarker = new MarkerClass({ element: el, anchor: "bottom" })
+        .setLngLat(marker.center)
+        .addTo(mapInstanceRef.current);
+
+      markerInstanceRef.current = newMarker;
+    });
+
+    return () => {
+      if (markerInstanceRef.current) {
+        markerInstanceRef.current.remove();
+        markerInstanceRef.current = null;
+      }
+    };
+  }, [marker?.center?.[0], marker?.center?.[1], marker?.label, loaded]);
+
+  // 4. React to dynamic global basemap style changes
   useEffect(() => {
     if (mapInstanceRef.current && effectiveStyle) {
       try {
         mapInstanceRef.current.setStyle(effectiveStyle);
+        const limit = MAP_STYLES[activeStyle]?.maxZoom ?? 22;
+        mapInstanceRef.current.setMaxZoom(limit);
+        if (mapInstanceRef.current.getZoom() > limit) {
+          mapInstanceRef.current.setZoom(limit);
+        }
       } catch (err) {
         console.warn("Map style switch error:", err);
       }
     }
-  }, [effectiveStyle]);
+  }, [effectiveStyle, activeStyle]);
 
   return (
     <div
