@@ -7,17 +7,17 @@ export default function DashboardHeader() {
   const [notifications] = useState(3);
 
   return (
-    <header className="sticky top-0 z-20 flex w-full items-center justify-between border-b border-zinc-800/80 bg-zinc-950/90 px-6 py-4 backdrop-blur-md">
+    <header className="sticky top-0 z-20 flex w-full items-center justify-between border-b border-zinc-800/80 bg-zinc-950/90 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md gap-3 sm:gap-4">
       {/* Search Input */}
-      <div className="flex items-center gap-4 flex-1 max-w-md">
+      <div className="flex items-center gap-4 flex-1 max-w-md min-w-0">
         <div className="relative w-full">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
           <input
             type="text"
-            placeholder="Search geology surveys, minerals, telemetry..."
-            className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 py-2 pl-10 pr-12 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+            placeholder="Search surveys, minerals, telemetry..."
+            className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 py-1.5 sm:py-2 pl-10 pr-10 sm:pr-12 text-xs sm:text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
           />
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-700">
+          <kbd className="hidden sm:inline-block absolute right-3 top-1/2 -translate-y-1/2 rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-700">
             ⌘K
           </kbd>
         </div>

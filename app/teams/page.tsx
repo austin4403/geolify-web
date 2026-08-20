@@ -57,26 +57,26 @@ const teamMembers: TeamMember[] = [
 
 export default function TeamsPage() {
   return (
-    <div className="flex flex-col flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full min-h-full pb-12">
+    <div className="flex flex-col flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl mx-auto w-full min-h-full pb-12">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Users className="h-6 w-6 text-blue-400" />
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+            <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">
               Exploration Teams & Field Personnel
             </h1>
           </div>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Manage geological field crews, station telemetry leads, and laboratory analysts.
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
           <button
             type="button"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-200 text-xs font-semibold backdrop-blur-md shadow-sm transition-all"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-200 text-xs font-semibold backdrop-blur-md shadow-sm transition-all"
           >
             <Users className="h-4 w-4 text-blue-400" />
             <span>Join Team</span>
@@ -84,7 +84,7 @@ export default function TeamsPage() {
 
           <button
             type="button"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/20 transition-all"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/20 transition-all"
           >
             <UserPlus className="h-4 w-4" />
             <span>Create Team</span>
@@ -93,13 +93,13 @@ export default function TeamsPage() {
       </div>
 
       {/* Team Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-400">Active Field Crews</span>
             <Radio className="h-4 w-4 text-emerald-400 animate-pulse" />
           </div>
-          <p className="text-2xl font-bold text-zinc-100 mt-2">18 Geologists</p>
+          <p className="text-xl sm:text-2xl font-bold text-zinc-100 mt-2">18 Geologists</p>
           <span className="text-[11px] text-emerald-400 mt-1 block">Live GPS Telemetry Syncing</span>
         </div>
 
@@ -108,7 +108,7 @@ export default function TeamsPage() {
             <span className="text-xs text-zinc-400">Active Projects Covered</span>
             <Compass className="h-4 w-4 text-blue-400" />
           </div>
-          <p className="text-2xl font-bold text-zinc-100 mt-2">5 Concessions</p>
+          <p className="text-xl sm:text-2xl font-bold text-zinc-100 mt-2">5 Concessions</p>
           <span className="text-[11px] text-blue-400 mt-1 block">4 Continents Operational</span>
         </div>
 
@@ -117,28 +117,28 @@ export default function TeamsPage() {
             <span className="text-xs text-zinc-400">Assay Quality Control</span>
             <Shield className="h-4 w-4 text-amber-400" />
           </div>
-          <p className="text-2xl font-bold text-zinc-100 mt-2">99.4% Verified</p>
+          <p className="text-xl sm:text-2xl font-bold text-zinc-100 mt-2">99.4% Verified</p>
           <span className="text-[11px] text-zinc-400 mt-1 block">QA/QC Protocol Certified</span>
         </div>
       </div>
 
       {/* Team Roster Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         {teamMembers.map((member) => (
           <div
             key={member.name}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 space-y-4 hover:border-zinc-700 transition-colors"
+            className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 sm:p-5 space-y-4 hover:border-zinc-700 transition-colors"
           >
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={member.avatar}
                   alt={member.name}
-                  className="h-12 w-12 rounded-full object-cover ring-2 ring-zinc-800"
+                  className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover ring-2 ring-zinc-800 shrink-0"
                 />
                 <div>
-                  <h3 className="text-base font-semibold text-zinc-100">
+                  <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
                     {member.name}
                   </h3>
                   <p className="text-xs text-blue-400 font-medium">
@@ -148,7 +148,7 @@ export default function TeamsPage() {
               </div>
 
               <span
-                className={`px-2.5 py-1 rounded-full text-[10px] font-semibold border ${
+                className={`shrink-0 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] font-semibold border ${
                   member.status === "active_field"
                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                     : member.status === "lab_analysis"

@@ -152,7 +152,7 @@ export default function MapRender({
           </div>
         </div>
       )}
-      <div ref={mapContainerRef} className="w-full h-full min-h-[500px]" />
+      <div ref={mapContainerRef} className="w-full h-full" />
     </div>
   );
 }

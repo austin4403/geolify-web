@@ -13,14 +13,14 @@ export default function Home() {
       <DashboardHeader />
 
       {/* Main Dashboard Content */}
-      <main className="flex-1 p-6 space-y-6 max-w-7xl w-full mx-auto">
+      <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl w-full mx-auto">
         {/* Page Title & Subtitle Banner */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 tracking-tight">
               Your Geolify Dashboard
             </h1>
-            <p className="text-sm text-zinc-400">
+            <p className="text-xs sm:text-sm text-zinc-400">
               Real-time telemetry, mineral assays, and concession modeling.
             </p>
           </div>
@@ -36,7 +36,7 @@ export default function Home() {
         <MetricsCards />
 
         {/* 2. Monthly Activity & Target Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           <div className="lg:col-span-8">
             <MonthlyActivityChart />
           </div>
@@ -51,7 +51,7 @@ export default function Home() {
         </div>
 
         {/* 4. Global Sites & Recent Surveys Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           <div className="lg:col-span-5">
             <GlobalSitesCard />
           </div>

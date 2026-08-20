@@ -50,12 +50,12 @@ const sites: Site[] = [
 
 export default function GlobalSitesCard() {
   return (
-    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-sm">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-6 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2">
             <Globe2 className="h-4 w-4 text-blue-400" />
-            <h3 className="text-base font-semibold text-zinc-100">
+            <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
               Global Geological Sites
             </h3>
           </div>

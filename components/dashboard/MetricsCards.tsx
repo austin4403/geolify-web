@@ -70,13 +70,13 @@ const metrics: Metric[] = [
 
 export default function MetricsCards() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {metrics.map((item) => {
         const Icon = item.icon;
         return (
           <div
             key={item.id}
-            className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 backdrop-blur-sm hover:border-zinc-700/80 transition-all hover:shadow-lg hover:shadow-black/20"
+            className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-5 backdrop-blur-sm hover:border-zinc-700/80 transition-all hover:shadow-lg hover:shadow-black/20"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">

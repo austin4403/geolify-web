@@ -52,12 +52,12 @@ export default function MonthlyTargetChart() {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-sm">
+    <div className="flex flex-col justify-between rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-6 backdrop-blur-sm">
       <div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Target className="h-4 w-4 text-emerald-400" />
-            <h3 className="text-base font-semibold text-zinc-100">
+            <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
               Exploration Target
             </h3>
           </div>

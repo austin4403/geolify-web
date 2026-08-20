@@ -93,10 +93,10 @@ export default function MonthlyActivityChart() {
   ];
 
   return (
-    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-sm">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-6 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-base font-semibold text-zinc-100">
+          <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
             Monthly Field Activity
           </h3>
           <p className="text-xs text-zinc-400 mt-0.5">

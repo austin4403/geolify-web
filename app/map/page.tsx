@@ -30,9 +30,11 @@ export default function MapPage() {
   const [selectedConcession, setSelectedConcession] = useState<ConcessionPreset>(concessions[0]);
 
   return (
-    <div className="flex flex-col flex-1 p-6 space-y-6 min-h-full">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="relative flex flex-col flex-1 h-[calc(100dvh-3.5rem)] md:h-auto md:min-h-full p-0 md:p-6 space-y-0 md:space-y-6 overflow-hidden md:overflow-visible">
+      {/* ========================================================= */}
+      {/* DESKTOP TOP HEADER (Visible only on Desktop: hidden md:flex) */}
+      {/* ========================================================= */}
+      <div className="hidden md:flex md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
             Geological & Telemetry Map
@@ -66,19 +68,71 @@ export default function MapPage() {
         </div>
       </div>
 
-      {/* Embedded Map Container */}
-      <div className="flex-1 w-full min-h-[600px] flex flex-col">
+      {/* ========================================================= */}
+      {/* MOBILE FLOATING TOP CONTROLS (Hidden on Desktop: md:hidden) */}
+      {/* ========================================================= */}
+      <div className="md:hidden absolute top-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
+        {/* Active Concession Pill */}
+        <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-xl backdrop-blur-md text-xs font-semibold text-zinc-200">
+          <MapPin className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+          <span className="truncate">{selectedConcession.name}</span>
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+            {selectedConcession.mineral}
+          </span>
+        </div>
+
+        {/* Layer Switcher */}
+        <div className="pointer-events-auto shrink-0 shadow-xl">
+          <MapLayerSwitcher direction="down" align="right" />
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* MAP VIEW CONTAINER (Full bleed on Mobile, Card on Desktop) */}
+      {/* ========================================================= */}
+      <div className="flex-1 w-full h-full md:min-h-[600px] flex flex-col relative overflow-hidden">
         <MapRender
           key={selectedConcession.id}
           initialCenter={selectedConcession.center}
           initialZoom={selectedConcession.zoom}
           autoGeolocate={selectedConcession.id === "global"}
-          className="flex-1 w-full min-h-[650px]"
+          className="flex-1 w-full h-full rounded-none md:rounded-2xl border-0 md:border md:border-zinc-800"
         />
       </div>
 
-      {/* Concession Info Bar */}
-      <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 backdrop-blur-sm flex flex-wrap items-center justify-between gap-4">
+      {/* ========================================================= */}
+      {/* MOBILE FLOATING BOTTOM HUD (Hidden on Desktop: md:hidden) */}
+      {/* ========================================================= */}
+      <div className="md:hidden absolute bottom-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
+        <div className="pointer-events-auto flex-1 min-w-0 px-3 py-2 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-xl backdrop-blur-md flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <span className="text-[10px] text-zinc-400 block truncate">
+              {selectedConcession.location}
+            </span>
+            <span className="text-xs font-semibold text-zinc-200 block truncate">
+              Focus: {selectedConcession.name}
+            </span>
+          </div>
+          <span className="text-[10px] font-mono text-emerald-400 shrink-0 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Active
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setSelectedConcession(concessions[0])}
+          className="pointer-events-auto p-2.5 rounded-xl bg-zinc-950/90 border border-zinc-800/90 text-zinc-300 hover:text-white shadow-xl backdrop-blur-md shrink-0 active:scale-95 transition-transform"
+          title="Reset View"
+          aria-label="Reset View"
+        >
+          <Compass className="h-4 w-4 text-blue-400" />
+        </button>
+      </div>
+
+      {/* ========================================================= */}
+      {/* DESKTOP CONCESSION INFO BAR (Hidden on Mobile: hidden md:flex) */}
+      {/* ========================================================= */}
+      <div className="hidden md:flex rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 backdrop-blur-sm items-center justify-between gap-4">
         <div className="flex items-center gap-6">
           <div>
             <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">

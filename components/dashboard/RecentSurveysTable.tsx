@@ -102,10 +102,10 @@ export default function RecentSurveysTable() {
   };
 
   return (
-    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-6 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
-          <h3 className="text-base font-semibold text-zinc-100">
+          <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
             Recent Geological Surveys & Sample Logs
           </h3>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -130,8 +130,8 @@ export default function RecentSurveysTable() {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+        <table className="w-full text-left text-xs min-w-[620px]">
           <thead>
             <tr className="border-b border-zinc-800 text-zinc-400 font-medium">
               <th className="pb-3 pr-4">Survey / Project</th>

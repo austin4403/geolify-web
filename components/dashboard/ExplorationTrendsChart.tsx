@@ -96,12 +96,12 @@ export default function ExplorationTrendsChart() {
   ];
 
   return (
-    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 backdrop-blur-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 sm:p-6 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
         <div>
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-blue-400" />
-            <h3 className="text-base font-semibold text-zinc-100">
+            <h3 className="text-sm sm:text-base font-semibold text-zinc-100">
               AI Geological Prediction & Model Confidence
             </h3>
           </div>
