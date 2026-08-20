@@ -10,6 +10,7 @@ interface MapRenderProps {
   className?: string;
   styleOverride?: string | StyleSpecification;
   marker?: { center: [number, number]; label?: string } | null;
+  onMapClick?: (coords: [number, number], locationName?: string, targetZoom?: number) => void;
 }
 
 export default function MapRender({
@@ -18,11 +19,15 @@ export default function MapRender({
   className = "w-full h-full min-h-[500px]",
   styleOverride,
   marker = null,
+  onMapClick,
 }: MapRenderProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<MapLibreMap | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerInstanceRef = useRef<any>(null);
+  const onMapClickRef = useRef(onMapClick);
+  onMapClickRef.current = onMapClick;
+
   const [loaded, setLoaded] = useState(false);
   const { currentStyle, activeStyle } = useMapTheme();
 
@@ -94,6 +99,89 @@ export default function MapRender({
           setLoaded(true);
         }
       };
+
+      map.on("click", async (e) => {
+        if (!onMapClickRef.current) return;
+        const lng = Number(e.lngLat.lng.toFixed(5));
+        const lat = Number(e.lngLat.lat.toFixed(5));
+        const coords: [number, number] = [lng, lat];
+        const defaultName = `${lat.toFixed(4)}°, ${lng.toFixed(4)}°`;
+
+        // 1. Immediately set focus coordinates (without modifying zoom)
+        onMapClickRef.current(coords, defaultName);
+
+        // 2. Fetch reverse geocoded place metadata
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.display_name) {
+              const placeTitle =
+                data.name ||
+                data.address?.suburb ||
+                data.address?.city ||
+                data.address?.town ||
+                data.address?.county ||
+                data.address?.country ||
+                data.display_name.split(",")[0];
+
+              const addressType = (data.addresstype || data.type || "").toLowerCase();
+              const isCountry =
+                addressType === "country" || data.address?.country === data.name;
+              const isCountyOrRegion =
+                addressType === "county" ||
+                addressType === "state" ||
+                addressType === "province" ||
+                addressType === "region";
+              const isCityOrTown =
+                addressType === "city" ||
+                addressType === "town" ||
+                addressType === "municipality";
+
+              // Determine target zoom ONLY if an administrative region was clicked
+              let targetZoom: number | undefined = undefined;
+              if (isCountry) {
+                targetZoom = 5;
+              } else if (isCountyOrRegion) {
+                targetZoom = 8.5;
+              } else if (isCityOrTown) {
+                targetZoom = 11.5;
+              }
+
+              // If bounding box is available for the country/county/city, fit camera
+              if (targetZoom && data.boundingbox && data.boundingbox.length === 4) {
+                const minLat = parseFloat(data.boundingbox[0]);
+                const maxLat = parseFloat(data.boundingbox[1]);
+                const minLon = parseFloat(data.boundingbox[2]);
+                const maxLon = parseFloat(data.boundingbox[3]);
+                try {
+                  map.fitBounds(
+                    [
+                      [minLon, minLat],
+                      [maxLon, maxLat],
+                    ],
+                    {
+                      padding: 48,
+                      duration: 1100,
+                      essential: true,
+                    }
+                  );
+                } catch {
+                  map.flyTo({ center: coords, zoom: targetZoom, essential: true });
+                }
+              } else if (targetZoom) {
+                map.flyTo({ center: coords, zoom: targetZoom, essential: true });
+              }
+
+              onMapClickRef.current(coords, placeTitle, targetZoom);
+            }
+          }
+        } catch {
+          // keep default coordinate name without zoom change
+        }
+      });
 
       map.on("load", handleReady);
       map.on("render", () => {

@@ -15,6 +15,8 @@ import {
   X,
   PanelLeftClose,
   PanelLeftOpen,
+  Search,
+  Bell,
 } from "lucide-react";
 import GeolifyLogo from "./icons/GeolifyLogo";
 
@@ -28,6 +30,12 @@ const navItems = [
     name: "Map",
     href: "/map",
     icon: MapPin,
+  },
+  {
+    name: "Notifications",
+    href: "/notifications",
+    icon: Bell,
+    badge: 3,
   },
   {
     name: "Report",
@@ -54,11 +62,14 @@ const navItems = [
 export default function Sidebar() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const pathname = usePathname();
 
-  // Close mobile drawer whenever route changes
+  // Close mobile drawer and search whenever route changes
   useEffect(() => {
     setMobileMenuOpen(false);
+    setMobileSearchOpen(false);
   }, [pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -92,12 +103,21 @@ export default function Sidebar() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="h-7 w-7 rounded-full object-cover ring-1 ring-zinc-700"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt="John Doe"
-          />
+          {/* Search Action Button */}
+          <button
+            type="button"
+            onClick={() => setMobileSearchOpen((prev) => !prev)}
+            aria-label="Search"
+            className={`p-2 rounded-xl border transition-colors ${
+              mobileSearchOpen
+                ? "border-blue-500/50 bg-blue-600/15 text-blue-400"
+                : "border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:border-zinc-700"
+            }`}
+          >
+            <Search className="h-5 w-5 text-zinc-200" />
+          </button>
+
+          {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -112,6 +132,33 @@ export default function Sidebar() {
           </button>
         </div>
       </div>
+
+      {/* Expandable Mobile Search Bar */}
+      {mobileSearchOpen && (
+        <div className="md:hidden sticky top-14 z-30 w-full px-4 py-2.5 bg-zinc-950/98 border-b border-zinc-800/80 backdrop-blur-md animate-in slide-in-from-top-2 duration-200">
+          <div className="relative w-full">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search surveys, minerals, telemetry..."
+              autoFocus
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 py-2 pl-10 pr-9 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200 p-0.5"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ========================================================= */}
       {/* MOBILE SLIDE-OVER DRAWER (Hidden on Desktop: md:hidden)   */}
@@ -186,7 +233,12 @@ export default function Sidebar() {
                         }`}
                       />
                       <span>{item.name}</span>
-                      {isActive && (
+                      {item.badge && (
+                        <span className="ml-auto flex h-5 min-w-5 items-center justify-center px-1.5 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold">
+                          {item.badge}
+                        </span>
+                      )}
+                      {isActive && !item.badge && (
                         <span className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
                       )}
                     </Link>
@@ -346,7 +398,12 @@ export default function Sidebar() {
                           }`}
                         />
                         <span>{item.name}</span>
-                        {isActive && (
+                        {item.badge && (
+                          <span className="ml-auto flex h-5 min-w-5 items-center justify-center px-1.5 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold">
+                            {item.badge}
+                          </span>
+                        )}
+                        {isActive && !item.badge && (
                           <span className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
                         )}
                       </Link>

@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Search, Bell, Download, Plus, ChevronDown } from "lucide-react";
 
 export default function DashboardHeader() {
   const [notifications] = useState(3);
 
   return (
-    <header className="sticky top-0 z-20 flex w-full items-center justify-between border-b border-zinc-800/80 bg-zinc-950/90 px-4 py-3 sm:px-6 sm:py-4 md:pl-16 backdrop-blur-md gap-3 sm:gap-4">
+    <header className="sticky top-0 z-20 hidden md:flex w-full items-center justify-between border-b border-zinc-800/80 bg-zinc-950/90 px-6 py-4 backdrop-blur-md gap-4">
       {/* Search Input */}
       <div className="flex items-center gap-4 flex-1 max-w-md min-w-0">
         <div className="relative w-full">
@@ -50,8 +51,8 @@ export default function DashboardHeader() {
         </button>
 
         {/* Notifications */}
-        <button
-          type="button"
+        <Link
+          href="/notifications"
           className="relative p-2 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-100 hover:border-zinc-700 transition-colors"
           title="Notifications"
         >
@@ -61,7 +62,7 @@ export default function DashboardHeader() {
               {notifications}
             </span>
           )}
-        </button>
+        </Link>
 
         {/* Separator */}
         <div className="h-6 w-px bg-zinc-800 mx-1" />

@@ -53,6 +53,20 @@ export default function MapPage() {
     setSearchMarker({ center: loc.center, label: loc.name });
   };
 
+  const handleMapClick = (
+    coords: [number, number],
+    locationName?: string,
+    targetZoom?: number
+  ) => {
+    const label = locationName || `${coords[1].toFixed(4)}°, ${coords[0].toFixed(4)}°`;
+    setMapCenter(coords);
+    if (targetZoom) {
+      setMapZoom(targetZoom);
+    }
+    setCurrentLocationName(label);
+    setSearchMarker({ center: coords, label });
+  };
+
   const handleResetView = () => {
     setMapCenter(DEFAULT_CENTER);
     setMapZoom(DEFAULT_ZOOM);
@@ -107,6 +121,7 @@ export default function MapPage() {
           initialCenter={mapCenter}
           initialZoom={mapZoom}
           marker={searchMarker}
+          onMapClick={handleMapClick}
           className="flex-1 w-full h-full rounded-none md:rounded-2xl border-0 md:border md:border-zinc-800"
         />
       </div>

@@ -24,7 +24,7 @@ interface MapLocationSearchProps {
 
 export default function MapLocationSearch({
   onSelectLocation,
-  placeholder = "Search place, Plus Code (e.g. JX24+WXR, Nyeri), coords...",
+  placeholder = "Search location, city, coordinate...",
   className = "",
 }: MapLocationSearchProps) {
   const [isOpen, setIsOpen] = useState(false);
