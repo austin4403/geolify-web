@@ -72,13 +72,24 @@ export default function TeamsPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/20 transition-colors"
-        >
-          <UserPlus className="h-4 w-4" />
-          <span>Add Team Member</span>
-        </button>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-200 text-xs font-semibold backdrop-blur-md shadow-sm transition-all"
+          >
+            <Users className="h-4 w-4 text-blue-400" />
+            <span>Join Team</span>
+          </button>
+
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/20 transition-all"
+          >
+            <UserPlus className="h-4 w-4" />
+            <span>Create Team</span>
+          </button>
+        </div>
       </div>
 
       {/* Team Stats */}
