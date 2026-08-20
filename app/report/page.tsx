@@ -7,7 +7,7 @@ import MapLayerSwitcher from "@/components/map/MapLayerSwitcher";
 export default function ReportPage() {
   return (
     <div className="flex flex-col flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-5xl mx-auto w-full min-h-full pb-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 md:pl-10">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">
             Geological Field Report

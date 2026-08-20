@@ -13,6 +13,8 @@ import {
   ChevronLeft,
   Menu,
   X,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import GeolifyLogo from "./icons/GeolifyLogo";
 
@@ -85,7 +87,7 @@ export default function Sidebar() {
             Geolify
           </span>
           <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            Live
+            Live (beta)
           </span>
         </Link>
 
@@ -269,24 +271,9 @@ export default function Sidebar() {
         <aside
           aria-label="Sidebar"
           className={`h-screen max-h-screen bg-zinc-950 border-r border-zinc-800/80 relative transition-all duration-500 ease-in-out flex flex-col justify-between overflow-hidden ${
-            !toggleMenu ? "w-64" : "w-0"
+            !toggleMenu ? "w-64" : "w-0 border-r-0"
           }`}
         >
-          {/* Collapse / Expand Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setToggleMenu(!toggleMenu)}
-            aria-label={toggleMenu ? "Open sidebar" : "Collapse sidebar"}
-            className={`absolute z-30 flex items-center justify-center p-2 rounded-full shadow-lg border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white hover:border-blue-500 hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-950 transition-all duration-500 ease-in-out ${
-              !toggleMenu ? "top-7 left-56" : "top-7 left-5"
-            }`}
-          >
-            <ChevronLeft
-              className={`h-4 w-4 transition-transform duration-500 ${
-                toggleMenu ? "rotate-180" : ""
-              }`}
-            />
-          </button>
 
           {/* Sidebar Main Content */}
           <div
@@ -295,28 +282,39 @@ export default function Sidebar() {
             }`}
           >
             {/* Brand Header */}
-            <div className="px-5 pb-5 border-b border-zinc-800/60">
+            <div className="px-4 pb-4 flex items-center justify-between border-b border-zinc-800/60">
               <Link
                 href="/"
-                className="flex items-center justify-between group cursor-pointer"
+                className="flex items-center gap-2.5 group cursor-pointer min-w-0"
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-gradient-to-br from-blue-600/20 to-emerald-500/20 border border-blue-500/30 text-blue-400 group-hover:border-blue-500/60 transition-colors">
-                    <GeolifyLogo className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-zinc-100 font-bold text-xl tracking-tight">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-blue-600/20 to-emerald-500/20 border border-blue-500/30 text-blue-400 group-hover:border-blue-500/60 transition-colors shrink-0">
+                  <GeolifyLogo className="w-5 h-5 text-blue-400" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-zinc-100 font-bold text-lg tracking-tight">
                       Geolify
                     </span>
-                    <span className="text-[11px] text-zinc-400 font-medium tracking-wide">
-                      Geological Intel
+                    <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      Web
                     </span>
                   </div>
+                  <span className="text-[10px] text-zinc-400 font-medium tracking-wide">
+                    Geological Intel
+                  </span>
                 </div>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Web
-                </span>
               </Link>
+
+              {/* In-Header Collapse Sidebar Button */}
+              <button
+                type="button"
+                onClick={() => setToggleMenu(true)}
+                aria-label="Collapse sidebar"
+                className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:text-white hover:border-zinc-700 hover:bg-zinc-800 transition-colors shrink-0"
+                title="Collapse sidebar"
+              >
+                <PanelLeftClose className="h-4 w-4" />
+              </button>
             </div>
 
             {/* Nav Items */}
@@ -439,6 +437,19 @@ export default function Sidebar() {
             </a>
           </div>
         </aside>
+
+        {/* Reopen Sidebar Button (Only rendered when sidebar is collapsed) */}
+        {toggleMenu && (
+          <button
+            type="button"
+            onClick={() => setToggleMenu(false)}
+            aria-label="Open sidebar"
+            className="absolute top-3.5 left-3.5 z-40 flex items-center justify-center p-2 rounded-xl shadow-xl border border-zinc-800 bg-zinc-900/90 text-zinc-400 hover:text-white hover:border-zinc-700 hover:bg-zinc-800 backdrop-blur-md transition-all animate-in fade-in zoom-in-95 duration-150"
+            title="Open sidebar"
+          >
+            <PanelLeftOpen className="h-4 w-4 text-blue-400" />
+          </button>
+        )}
       </div>
     </>
   );

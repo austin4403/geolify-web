@@ -34,7 +34,7 @@ export default function MapPage() {
       {/* ========================================================= */}
       {/* DESKTOP TOP HEADER (Visible only on Desktop: hidden md:flex) */}
       {/* ========================================================= */}
-      <div className="hidden md:flex md:items-center justify-between gap-4">
+      <div className="hidden md:flex md:items-center justify-between gap-4 md:pl-10">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
             Geological & Telemetry Map
@@ -71,7 +71,7 @@ export default function MapPage() {
       {/* ========================================================= */}
       {/* MOBILE FLOATING TOP CONTROLS (Hidden on Desktop: md:hidden) */}
       {/* ========================================================= */}
-      <div className="md:hidden absolute top-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
+      <div className="md:hidden absolute top-3 left-3 z-30 flex flex-col items-start gap-2 pointer-events-none">
         {/* Active Concession Pill */}
         <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-xl backdrop-blur-md text-xs font-semibold text-zinc-200">
           <MapPin className="h-3.5 w-3.5 text-blue-400 shrink-0" />
@@ -81,9 +81,9 @@ export default function MapPage() {
           </span>
         </div>
 
-        {/* Layer Switcher */}
-        <div className="pointer-events-auto shrink-0 shadow-xl">
-          <MapLayerSwitcher direction="down" align="right" />
+        {/* Layer Switcher (Top Left, Below Concessions Pill) */}
+        <div className="pointer-events-auto shadow-xl">
+          <MapLayerSwitcher direction="down" align="left" />
         </div>
       </div>
 
@@ -100,9 +100,8 @@ export default function MapPage() {
         />
       </div>
 
-      {/* ========================================================= */}
-      {/* MOBILE FLOATING BOTTOM HUD (Hidden on Desktop: md:hidden) */}
-      {/* ========================================================= */}
+      {/* Floating telemetry HUD and quick actions for mobile view (hidden on desktop) */}
+
       <div className="md:hidden absolute bottom-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
         <div className="pointer-events-auto flex-1 min-w-0 px-3 py-2 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-xl backdrop-blur-md flex items-center justify-between gap-2">
           <div className="min-w-0">

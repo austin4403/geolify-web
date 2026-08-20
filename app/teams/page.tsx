@@ -59,7 +59,7 @@ export default function TeamsPage() {
   return (
     <div className="flex flex-col flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl mx-auto w-full min-h-full pb-12">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 md:pl-10">
         <div>
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
